@@ -1,4 +1,4 @@
-class Circle { //<>// //<>//
+class Circle {
   PVector pos;
   float radius;
   ArrayList<Circle> touchingWith;
@@ -7,7 +7,7 @@ class Circle { //<>// //<>//
 
   Circle() {
     pos = new PVector(0, 0);
-    radius = 100;
+    radius = 200;
     touchingWith = new ArrayList<Circle>();
     arcs = new ArrayList<PVector>();
     intersections = new ArrayList<ArrayList<PVector>>();
@@ -25,21 +25,27 @@ class Circle { //<>// //<>//
     if (touchingWith.size() > 0) {
       stroke(255, 0, 0);
     }
+    
     pushMatrix();
     translate(pos.x, pos.y);
-    if (touchingWith.size() > 0) {
-      float angle = PVector.angleBetween(pos.copy().sub(touchingWith.get(0).pos), new PVector(1, 0));
-      rotate(angle);
-      if (intersections.get(0).size() > 1) {
-        arcs.get(0).y = TWO_PI - PVector.angleBetween(
-          intersections.get(0).get(0).copy().sub(pos), 
-          intersections.get(0).get(1).copy().sub(pos));
-      }
-    }
+    
     for (PVector a : arcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
     }
+    
+    noStroke();
+    fill(240);
+    displayIntersectionPoints();
+    
     popMatrix();
+  }
+  
+  void displayIntersectionPoints() {
+    for (ArrayList<PVector> i : intersections) {
+      for (PVector p : i) {
+        ellipse(p.x, p.y, 10, 10);
+      }
+    }
   }
 
   void touch(Circle c) {
@@ -70,7 +76,7 @@ class Circle { //<>// //<>//
     float n = c1r - c2r;
 
     if (n < 0)
-      n = n * -1;
+      n *= -1;
 
     //No solns
     if ( d > m ) {

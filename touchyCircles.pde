@@ -1,9 +1,9 @@
 ArrayList<Circle> cs;
 
 void setup() {
-  size(1000, 1000);
+  size(1200, 1200);
   cs = new ArrayList<Circle>();
-  cs.add(new Circle());
+  //cs.add(new Circle());
 }
 
 void draw() {
@@ -27,7 +27,7 @@ void checkTouching() {
     for(Circle c2 : cs) {
       if (c1 != c2 && c1.pos.dist(c2.pos) <= c1.radius + c2.radius) {
         c1.touch(c2);
-        c2.touch(c1);
+        //c2.touch(c1);
       }
     }
   }
