@@ -13,7 +13,7 @@ class Circle {
     arcs = new ArrayList<PVector>();
     intersections = new ArrayList<ArrayList<PVector>>();
     //arcs.add(new PVector(0, TWO_PI));
-    ref = new PVector(100, 0);
+    ref = new PVector(radius, 0);
   }
 
   void setPos(float x, float y) {
@@ -22,7 +22,7 @@ class Circle {
 
   void display() {
     stroke(200);
-    strokeWeight(3);
+    strokeWeight(1);
     noFill();
     if (touchingWith.size() > 0) {
       stroke(255, 0, 0);
@@ -34,12 +34,12 @@ class Circle {
     ellipse(0, 0, radius*2, radius*2);
 
     stroke(20);
-    strokeWeight(6);
+    strokeWeight(3);
     for (PVector a : arcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
     }
     
-    strokeWeight(3);
+    strokeWeight(1);
     displayIntersectionPoints();
     stroke(250);
     line(0, 0, ref.x, ref.y);
@@ -49,7 +49,7 @@ class Circle {
 
   void displayIntersectionPoints() {
     noStroke();
-    fill(240);
+    fill(100);
     for (ArrayList<PVector> i : intersections) {
       for (PVector p : i) {
         ellipse(p.x, p.y, 10, 10);
@@ -71,7 +71,9 @@ class Circle {
   }
 
   PVector calcNewNegativeArcs(ArrayList<PVector> is) {
-    return new PVector(
+      textAt(is.get(0), ""+PVector.angleBetween(is.get(0), ref));
+      textAt(is.get(1), ""+PVector.angleBetween(is.get(1), ref));
+      return new PVector(
       PVector.angleBetween(is.get(0), ref), 
       PVector.angleBetween(is.get(1), ref)
       );

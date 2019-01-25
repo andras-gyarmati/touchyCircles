@@ -47,3 +47,13 @@ void moveLast() {
 void mousePressed() {
   cs.add(new Circle());
 }
+
+void textAt(PVector pos, String text) {
+  pushMatrix();
+  translate(pos.x, pos.y);
+  fill(255);
+  stroke(0);
+  textSize(20);
+  text(text, 0 ,0);
+  popMatrix();
+}
