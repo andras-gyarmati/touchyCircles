@@ -3,7 +3,7 @@ ArrayList<Circle> cs;
 void setup() {
   size(1200, 1200);
   cs = new ArrayList<Circle>();
-  //cs.add(new Circle());
+  cs.add(new Circle());
 }
 
 void draw() {

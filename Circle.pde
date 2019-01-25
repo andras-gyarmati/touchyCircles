@@ -33,11 +33,11 @@ class Circle {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
     }
     
+    popMatrix();
+    
     noStroke();
     fill(240);
     displayIntersectionPoints();
-    
-    popMatrix();
   }
   
   void displayIntersectionPoints() {
