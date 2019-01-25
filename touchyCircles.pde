@@ -10,7 +10,7 @@ void draw() {
   background(20);
   translate(width / 2, height / 2);
   resetAllTouching();
-  checkTouching();
+  checkAllTouching();
   for(Circle c : cs) {
     c.display();
   }
@@ -22,7 +22,7 @@ void resetAllTouching() {
   }
 }
 
-void checkTouching() {
+void checkAllTouching() {
   for(Circle c1 : cs) {
     for(Circle c2 : cs) {
       if (c1 != c2 && c1.pos.dist(c2.pos) <= c1.radius + c2.radius) {

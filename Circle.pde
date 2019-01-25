@@ -4,6 +4,7 @@ class Circle {
   ArrayList<Circle> touchingWith;
   ArrayList<ArrayList<PVector>> intersections;
   ArrayList<PVector> arcs;
+  PVector ref;
 
   Circle() {
     pos = new PVector(0, 0);
@@ -11,7 +12,8 @@ class Circle {
     touchingWith = new ArrayList<Circle>();
     arcs = new ArrayList<PVector>();
     intersections = new ArrayList<ArrayList<PVector>>();
-    arcs.add(new PVector(0, TWO_PI));
+    //arcs.add(new PVector(0, TWO_PI));
+    ref = new PVector(100, 0);
   }
 
   void setPos(float x, float y) {
@@ -29,18 +31,26 @@ class Circle {
     pushMatrix();
     translate(pos.x, pos.y);
     
+    ellipse(0, 0, radius*2, radius*2);
+    
+    stroke(20);
+    strokeWeight(5);
     for (PVector a : arcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
+      stroke(250);
+      line(0, 0, a.x, a.y);
     }
     
-    popMatrix();
-    
-    noStroke();
-    fill(240);
     displayIntersectionPoints();
+    stroke(250);
+    line(0, 0, ref.x, ref.y);
+    
+    popMatrix();
   }
   
   void displayIntersectionPoints() {
+    noStroke();
+    fill(240);
     for (ArrayList<PVector> i : intersections) {
       for (PVector p : i) {
         ellipse(p.x, p.y, 10, 10);
@@ -51,13 +61,25 @@ class Circle {
   void touch(Circle c) {
     if (!isTouching(c)) {
       this.touchingWith.add(c);
-      intersections.add(findIntersectionOfCircle(c));
+      ArrayList<PVector> is = findIntersectionOfCircle(c);
+      intersections.add(is);
+      if (is.size() == 2) {
+        arcs.add(calcNewNegativeArcs(is));
+      }
     }
+  }
+  
+  PVector calcNewNegativeArcs(ArrayList<PVector> is) {
+    return new PVector(
+      PVector.angleBetween(is.get(0), ref),
+      PVector.angleBetween(is.get(1), ref)
+    );
   }
 
   void resetTouching() {
     this.touchingWith = new ArrayList<Circle>();
     this.intersections = new ArrayList<ArrayList<PVector>>();
+    this.arcs = new ArrayList<PVector>();
   }
 
   boolean isTouching(Circle c) {
@@ -117,8 +139,8 @@ class Circle {
     p2.x = p.x - ( h / d ) * ( c.pos.y - pos.y );
     p2.y = p.y + ( h / d ) * ( c.pos.x - pos.x );
 
-    intersection.add(p1);
-    intersection.add(p2);
+    intersection.add(p1.sub(pos));
+    intersection.add(p2.sub(pos));
 
     return intersection;
   }
