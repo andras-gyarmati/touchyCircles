@@ -11,20 +11,20 @@ void draw() {
   translate(width / 2, height / 2);
   resetAllTouching();
   checkAllTouching();
-  for(Circle c : cs) {
+  for (Circle c : cs) {
     c.display();
   }
 }
 
 void resetAllTouching() {
-  for(Circle c : cs) {
+  for (Circle c : cs) {
     c.resetTouching();
   }
 }
 
 void checkAllTouching() {
-  for(Circle c1 : cs) {
-    for(Circle c2 : cs) {
+  for (Circle c1 : cs) {
+    for (Circle c2 : cs) {
       if (c1 != c2 && c1.pos.dist(c2.pos) <= c1.radius + c2.radius) {
         c1.touch(c2);
       }
@@ -54,6 +54,6 @@ void textAt(PVector pos, String text) {
   fill(255);
   stroke(0);
   textSize(20);
-  text(text, 0 ,0);
+  text(text, 0, 0);
   popMatrix();
 }

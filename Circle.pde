@@ -34,15 +34,15 @@ class Circle {
     ellipse(0, 0, radius*2, radius*2);
 
     stroke(20);
-    strokeWeight(3);
+    strokeWeight(5);
     for (PVector a : arcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
     }
-    
-    strokeWeight(1);
-    displayIntersectionPoints();
-    stroke(250);
-    line(0, 0, ref.x, ref.y);
+
+    //strokeWeight(1);
+    //displayIntersectionPoints();
+    //stroke(250);
+    //line(0, 0, ref.x, ref.y);
 
     popMatrix();
   }
@@ -71,12 +71,17 @@ class Circle {
   }
 
   PVector calcNewNegativeArcs(ArrayList<PVector> is) {
-      textAt(is.get(0), ""+PVector.angleBetween(is.get(0), ref));
-      textAt(is.get(1), ""+PVector.angleBetween(is.get(1), ref));
-      return new PVector(
-      PVector.angleBetween(is.get(0), ref), 
-      PVector.angleBetween(is.get(1), ref)
-      );
+    PVector p1 = is.get(0);
+    PVector p2 = is.get(1);
+    float a1 = PVector.angleBetween(p1, ref);
+    if (p1.y < 0) a1 *= -1;
+    float a2 = PVector.angleBetween(p2, ref);
+    if (p2.y < 0) a2 *= -1;
+
+    //textAt(p1, ""+floor(degrees(a1))+"°, x: "+floor(p1.x)+", y: "+floor(p1.y));
+    //textAt(p2, ""+floor(degrees(a2))+"°, x: "+floor(p2.x)+", y: "+floor(p2.y));
+
+    return new PVector(a1, a2);
   }
 
   void resetTouching() {
