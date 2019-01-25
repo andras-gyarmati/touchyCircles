@@ -27,33 +27,34 @@ class Circle {
     if (touchingWith.size() > 0) {
       stroke(255, 0, 0);
     }
-    
+
     pushMatrix();
     translate(pos.x, pos.y);
-    
+
     ellipse(0, 0, radius*2, radius*2);
-    
+
     stroke(20);
-    strokeWeight(5);
+    strokeWeight(6);
     for (PVector a : arcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
-      stroke(250);
-      line(0, 0, a.x, a.y);
     }
     
+    strokeWeight(3);
     displayIntersectionPoints();
     stroke(250);
     line(0, 0, ref.x, ref.y);
-    
+
     popMatrix();
   }
-  
+
   void displayIntersectionPoints() {
     noStroke();
     fill(240);
     for (ArrayList<PVector> i : intersections) {
       for (PVector p : i) {
         ellipse(p.x, p.y, 10, 10);
+        stroke(250);
+        line(0, 0, p.x, p.y);
       }
     }
   }
@@ -68,12 +69,12 @@ class Circle {
       }
     }
   }
-  
+
   PVector calcNewNegativeArcs(ArrayList<PVector> is) {
     return new PVector(
-      PVector.angleBetween(is.get(0), ref),
+      PVector.angleBetween(is.get(0), ref), 
       PVector.angleBetween(is.get(1), ref)
-    );
+      );
   }
 
   void resetTouching() {

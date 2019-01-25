@@ -27,7 +27,6 @@ void checkAllTouching() {
     for(Circle c2 : cs) {
       if (c1 != c2 && c1.pos.dist(c2.pos) <= c1.radius + c2.radius) {
         c1.touch(c2);
-        //c2.touch(c1);
       }
     }
   }
