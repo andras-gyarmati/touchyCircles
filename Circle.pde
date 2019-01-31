@@ -3,14 +3,15 @@ class Circle {
   float radius;
   ArrayList<Circle> touchingWith;
   ArrayList<ArrayList<PVector>> intersections;
-  ArrayList<PVector> arcs;
+  ArrayList<PVector> overlapArcs, displayableArcs;
   PVector ref;
 
   Circle() {
     pos = new PVector(0, 0);
     radius = 200;
     touchingWith = new ArrayList<Circle>();
-    arcs = new ArrayList<PVector>();
+    overlapArcs = new ArrayList<PVector>();
+    displayableArcs = new ArrayList<PVector>();
     intersections = new ArrayList<ArrayList<PVector>>();
     //arcs.add(new PVector(0, TWO_PI));
     ref = new PVector(radius, 0);
@@ -22,29 +23,27 @@ class Circle {
 
   void display() {
     stroke(200);
-    strokeWeight(1);
+    strokeWeight(10);
     noFill();
     if (touchingWith.size() > 0) {
       stroke(255, 0, 0);
     }
-
+    flipArcs();
     pushMatrix();
     translate(pos.x, pos.y);
-
-    ellipse(0, 0, radius*2, radius*2);
-
-    stroke(20);
-    strokeWeight(5);
-    for (PVector a : arcs) {
+    for (PVector a : displayableArcs) {
       arc(0, 0, radius*2, radius*2, a.x, a.y);
     }
-
-    //strokeWeight(1);
-    //displayIntersectionPoints();
-    //stroke(250);
-    //line(0, 0, ref.x, ref.y);
-
     popMatrix();
+  }
+
+  void flipArcs() {
+    if (overlapArcs.size() == 0) return;
+    displayableArcs = new ArrayList<PVector>();
+    for (int i = 0; i < overlapArcs.size()-1; i++) {
+      displayableArcs.add(new PVector(overlapArcs.get(i).y, overlapArcs.get(i+1).x));
+    }
+    displayableArcs.add(new PVector(overlapArcs.get(overlapArcs.size()-1).y, overlapArcs.get(0).x));
   }
 
   void displayIntersectionPoints() {
@@ -65,7 +64,7 @@ class Circle {
       ArrayList<PVector> is = findIntersectionOfCircle(c);
       intersections.add(is);
       if (is.size() == 2) {
-        arcs.add(calcNewNegativeArcs(is));
+        overlapArcs.add(calcNewNegativeArcs(is));
       }
     }
   }
@@ -77,17 +76,13 @@ class Circle {
     if (p1.y < 0) a1 *= -1;
     float a2 = PVector.angleBetween(p2, ref);
     if (p2.y < 0) a2 *= -1;
-
-    //textAt(p1, ""+floor(degrees(a1))+"°, x: "+floor(p1.x)+", y: "+floor(p1.y));
-    //textAt(p2, ""+floor(degrees(a2))+"°, x: "+floor(p2.x)+", y: "+floor(p2.y));
-
     return new PVector(a1, a2);
   }
 
   void resetTouching() {
     this.touchingWith = new ArrayList<Circle>();
     this.intersections = new ArrayList<ArrayList<PVector>>();
-    this.arcs = new ArrayList<PVector>();
+    this.overlapArcs = new ArrayList<PVector>();
   }
 
   boolean isTouching(Circle c) {
